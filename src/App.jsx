@@ -1,14 +1,17 @@
-import './App.css';
+import AppFooter from './components/AppFooter';
+import AppHeader from './components/AppHeader';
+import PageContent from './components/PageContent';
+import SideMenu from './components/SideMenu';
 
 function App() {
-  const whatever = () => {
-    alert('Button was clicked!!!');
-  };
-
   return (
     <div>
-      <h1>Hello Doo!</h1>
-      <button onClick={whatever}>Click me</button>
+      <AppHeader />
+      <div className="menuandcontent">
+        <SideMenu />
+        <PageContent />
+      </div>
+      <AppFooter />
     </div>
   );
 }
