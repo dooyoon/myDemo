@@ -1,5 +1,7 @@
 import { DollarCircleOutlined, ShoppingCartOutlined, ShoppingOutlined, UserOutlined } from '@ant-design/icons';
-import { Card, Space, Statistic, Typography } from 'antd';
+import { Card, Space, Statistic, Table, Typography } from 'antd';
+import { useEffect, useState } from 'react';
+import { getOrders } from '../API';
 
 export default function Dashboard() {
   return (
@@ -67,6 +69,9 @@ export default function Dashboard() {
           }
         />
       </Space>
+      <Space>
+        <RecentOrders />
+      </Space>
     </div>
   );
 }
@@ -79,5 +84,44 @@ function DashboardCard({ title, value, icon }) {
         <Statistic title={title} value={value} />
       </Space>
     </Card>
+  );
+}
+
+function RecentOrders() {
+  const [dataSource, setDataSource] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+
+    getOrders().then((res) => {
+      setDataSource(res.products.splice(0, 3));
+      setLoading(false);
+    });
+  }, []);
+
+  return (
+    <>
+      <Typography.Text>Recent Orders</Typography.Text>
+      <Table
+        columns={[
+          {
+            title: 'Title',
+            dataIndex: 'title',
+          },
+          {
+            title: 'Quantity',
+            dataIndex: 'quantity',
+          },
+          {
+            title: 'Price',
+            dataIndex: 'discountedPrice',
+          },
+        ]}
+        loading={loading}
+        dataSource={dataSource}
+        pagination={false}
+      ></Table>
+    </>
   );
 }
